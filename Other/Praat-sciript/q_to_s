@@ -1,0 +1,55 @@
+numberOfSounds = numberOfSelected  ("Sound")
+
+#set up arrays with names and IDs of selected Sounds
+#this is necessary because vtchange changes the selections
+
+fomin = 30
+fomax = 600
+
+
+for ifile from 1 to numberOfSounds
+   sound$ = selected$  ("Sound", 'ifile')
+ # soundID = selected  ("Sound", 'ifile')
+  # ids'ifile' = soundID
+   names'ifile'$ = sound$
+endfor
+
+#now get down to business
+num = numberOfSounds/2
+for isy from 1 to num
+  # soundID = ids'isy'
+   isyq = (2 * 'isy') - 1
+   isys = 2 * 'isy'
+   soundq$ = names'isyq'$
+   sounds$ = names'isys'$
+   call fodurnchange
+endfor
+
+procedure fodurnchange
+select Sound 'soundq$'
+To Manipulation... 0.01 75 600
+select Sound 'sounds$'
+To Manipulation... 0.01 75 600
+Extract pitch tier
+select Manipulation 'soundq$'
+plus PitchTier 'sounds$'
+Replace pitch tier
+
+select Manipulation 'soundq$'
+Get resynthesis (PSOLA)
+Convert to stereo
+
+newnameq$ = soundq$ + "_s"
+Rename: newnameq$
+
+Write to WAV file... C:\Users\Dell\Desktop\new\'newnameq$'.wav
+
+endproc
+
+
+
+
+
+
+
+

@@ -1,0 +1,39 @@
+# NOTE:渐入渐出练习一（只限于【-1,1】范围内的变化）
+# Reference：chrome-extension://ikhdkkncnoglghljlkmcimlnlhkeamad/pdf-viewer/web/viewer.html?file=http%3A%2F%2Fwww.sgha.net%2Flibrary%2Fsspbook.pdf
+list = Create Strings as file list: "fileList", "F:\Work\Praat\fadeInOut_practice\base syllable\*.wav"
+n = Get number of strings
+for i to n
+    selectObject: list
+    filename$ = Get string: i
+    fileID = Read from file: "F:\Work\Praat\fadeInOut_practice\base syllable\" + filename$
+    master = selected("Sound")
+    Copy: "copy"
+    copy = selected("Sound")
+    select copy
+
+    # process sound object
+    Play
+    xmax = Get end time
+    dur = 0.2
+    f = 1/(2*dur)
+    #Formula: "randomUniform(-1,1)"
+    x0 = 0
+    x1 = x0+dur
+    Formula: "if x>=x0 and x<=x1 then self*(1-cos(2*pi*f*(x-x0)))/2 else self fi"
+    x0 = xmax -dur
+    x1 = x0+dur
+    Formula: "if x>=x0 and x<=x1 then self*(1+cos(2*pi*f*(x-x0)))/2 else self fi"
+    #appendInfoLine: xmax
+    Erase all
+    Select outer viewport: 0, 6, 2, 4
+    select master
+    Draw: 0, 0, 0, 0, "yes", "Curve"
+    Select outer viewport: 0, 6, 4, 6
+    select copy
+    Draw: 0, 0, 0, 0, "yes", "Curve"
+    #remove sound object
+    removeObject: fileID
+endfor
+removeObject: list
+
+

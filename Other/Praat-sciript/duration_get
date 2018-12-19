@@ -1,0 +1,30 @@
+numberOfSounds = numberOfSelected  ("Sound")
+
+#set up arrays with names and IDs of selected Sounds
+#this is necessary because vtchange changes the selections
+for ifile from 1 to numberOfSounds
+   sound$ = selected$  ("Sound", 'ifile')
+   soundID = selected  ("Sound", 'ifile')
+   ids'ifile' = soundID
+   names'ifile'$ = sound$
+endfor
+
+#now get down to business
+for ifile from 1 to numberOfSounds
+   soundID = ids'ifile'
+   sound$ = names'ifile'$
+   call fodurnchange
+endfor
+
+
+
+procedure fodurnchange
+select Sound 'sound$'
+
+durn = Get duration
+
+appendInfo: durn ,newline$
+endproc
+
+
+

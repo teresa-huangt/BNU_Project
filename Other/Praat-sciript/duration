@@ -1,0 +1,52 @@
+numberOfSounds = numberOfSelected  ("Sound")
+
+#set up arrays with names and IDs of selected Sounds
+#this is necessary because vtchange changes the selections
+for ifile from 1 to numberOfSounds
+   sound$ = selected$  ("Sound", 'ifile')
+   soundID = selected  ("Sound", 'ifile')
+   ids'ifile' = soundID
+   names'ifile'$ = sound$
+endfor
+
+#now get down to business
+for ifile from 1 to numberOfSounds
+   soundID = ids'ifile'
+   sound$ = names'ifile'$
+   call fodurnchange
+endfor
+
+
+
+procedure fodurnchange
+select Sound 'sound$'
+
+durn = Get duration
+To Manipulation... 0.01 75 600
+
+select Manipulation 'sound$'
+	Create DurationTier... 'sound$' 0 'durn'
+      a = 0.35/'durn'
+	Add point... 0 'a'
+	select Manipulation 'sound$'
+
+	plus DurationTier 'sound$'
+	Replace duration tier
+#	select DurationTier 'sound$'
+
+#	
+
+
+
+select Manipulation 'sound$'
+
+#Get resynthesis (PSOLA)
+Get resynthesis (overlap-add)
+Convert to stereo
+Rename... 'sound$'
+
+Write to WAV file... C:\Users\lenovo\Desktop\stimulus\'sound$'.wav
+endproc
+
+
+

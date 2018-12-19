@@ -1,0 +1,32 @@
+numberOfSounds = numberOfSelected  ("Sound")
+
+#set up arrays with names and IDs of selected Sounds
+#this is necessary because vtchange changes the selections
+
+fomin = 30
+fomax = 600
+
+
+for ifile from 1 to numberOfSounds
+   sound$ = selected$  ("Sound", 'ifile')
+   soundID = selected  ("Sound", 'ifile')
+   ids'ifile' = soundID
+   names'ifile'$ = sound$
+endfor
+
+#now get down to business
+for ifile from 1 to numberOfSounds
+   soundID = ids'ifile'
+   sound$ = names'ifile'$
+   call fodurnchange
+endfor
+
+
+
+procedure fodurnchange
+select Sound 'sound$'
+To Manipulation... 0.01 30 600
+Extract pitch tier
+meanPitch = Get mean (curve): 0, 0
+appendInfo: meanPitch ,newline$
+endproc
